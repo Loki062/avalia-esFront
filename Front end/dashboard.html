@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área do Cliente</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="user-dashboard">
+        <h1>Bem-vindo <span id="usernameDisplay",></span>!</h1>
+        <p>Você já fez <span id="reviewCount"></span> avaliações.</p>
+        <p>Para ganhar o prêmio, você precisa de 10 avaliações.</p>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        <button id="toggleFormsBtn">Ver Formulários Disponíveis</button>
+        <div id="formsContainer" style="display:none;">
+            <!-- Os formulários de avaliação serão inseridos aqui via JavaScript -->
+        </div>
+    </div>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
