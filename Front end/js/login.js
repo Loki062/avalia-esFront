@@ -3,49 +3,28 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    // Definindo um nome de usuário e senha fictícios para teste
-    const storedUsername = 'davi';
-    const storedPassword = '123';
-
-    if (username === storedUsername && password === storedPassword) {
-        // Simulando o armazenamento do nome de usuário em sessionStorage
-        sessionStorage.setItem('user', username);
-        sessionStorage.setItem('reviewCount', '3'); // Simulando a quantidade de avaliações já feitas
+    // Chamada para o endpoint de login do back-end
+    fetch('https://avaliacoes-back.vercel.app/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Falha na autenticação'); // Caso o status não seja um sucesso (ex: 200)
+        }
+        return response.json(); // Converte a resposta em JSON
+    })
+    .then(data => {
+        // Assumindo que o back-end responde com dados úteis após login bem-sucedido
+        sessionStorage.setItem('user', data.user.username);
+        sessionStorage.setItem('reviewCount', data.user.reviewCount); // Ajuste de acordo com o que o back-end retorna
         window.location.href = 'dashboard.html'; // Redireciona para a área do cliente
-    } else {
+    })
+    .catch(error => {
+        console.error('Erro de login:', error);
         alert('Usuário ou senha incorretos!');
-    }
-});
-
-document.getElementById('registerBtn').addEventListener('click', function() {
-    document.querySelector('.login-container').style.display = 'none';
-    document.querySelector('.register-container').style.display = 'block';
-});
-
-document.getElementById('registerForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const cpf = document.getElementById('cpf').value;
-    const phone = document.getElementById('phone').value;
-
-    if (cpf.length !== 11) {
-        alert('CPF deve ter exatamente 11 dígitos.');
-        return;
-    }
-
-    if (phone.length !== 11) {
-        alert('Número de telefone deve ter exatamente 11 dígitos.');
-        return;
-    }
-
-    // Simulação de registro bem-sucedido
-    console.log('Registrado com sucesso:', cpf, phone);
-    // Aqui você pode simular o armazenamento de dados ou direcionar para uma página de sucesso
-    alert('Registro concluído! Faça o login para continuar.');
-    document.querySelector('.register-container').style.display = 'none';
-    document.querySelector('.login-container').style.display = 'block';
-});
-
-document.getElementById('backToLoginBtn').addEventListener('click', function() {
-    document.querySelector('.register-container').style.display = 'none';
-    document.querySelector('.login-container').style.display = 'block';
+    });
 });
